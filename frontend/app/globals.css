@@ -1,0 +1,287 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens. Every colour used by the dashboard is a CSS variable so the
+ * light and dark themes swap in one place (prefers-color-scheme, or an
+ * explicit data-theme on <html>).
+ */
+:root {
+  color-scheme: light;
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --surface-2: #f0f3f6;
+  --surface-3: #e6eaef;
+  --border: #dde3ea;
+  --border-strong: #c5cdd7;
+  --fg: #121a24;
+  --fg-2: #3a4553;
+  --muted: #5d6877;
+  --accent: #0c6f66;
+  --accent-hover: #0a5c55;
+  --accent-fg: #ffffff;
+  --accent-soft: #e2f3f0;
+  --focus: #2a78d6;
+
+  --allow: #17663a;
+  --allow-bg: #e7f5ec;
+  --allow-border: #b4dfc3;
+  --restrict: #8a4b06;
+  --restrict-bg: #fcf2df;
+  --restrict-border: #eed29b;
+  --approval: #5a2fb0;
+  --approval-bg: #f0ebfc;
+  --approval-border: #d5c7f5;
+  --deny: #b42318;
+  --deny-bg: #fdebe9;
+  --deny-border: #f3c0ba;
+  --info: #1f5aa6;
+  --info-bg: #e8f0fb;
+  --info-border: #bfd3ef;
+  --neutral: #4b5563;
+  --neutral-bg: #eef1f4;
+  --neutral-border: #d4dae1;
+
+  /* Data series (validated reference palette: slot 1 blue, slot 2 orange). */
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --grid: #e3e7ec;
+
+  /* Graph node types. */
+  --node-user: #2a78d6;
+  --node-agent: #0c8f7f;
+  --node-delegation: #6250d6;
+  --node-grant: #c98500;
+  --node-resource: #d1495b;
+  --node-capability: #6b7280;
+
+  --shadow: 0 1px 2px rgb(16 24 40 / 0.06), 0 1px 3px rgb(16 24 40 / 0.05);
+  --shadow-lg: 0 12px 32px rgb(16 24 40 / 0.18);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --bg: #0d1217;
+    --surface: #141b22;
+    --surface-2: #1a222b;
+    --surface-3: #232d38;
+    --border: #26313d;
+    --border-strong: #364352;
+    --fg: #e7ecf1;
+    --fg-2: #c3ccd6;
+    --muted: #93a0ae;
+    --accent: #2fb3a3;
+    --accent-hover: #4cc6b7;
+    --accent-fg: #06201d;
+    --accent-soft: #10302c;
+    --focus: #5ea1f0;
+
+    --allow: #6fdb9a;
+    --allow-bg: #0f2a1b;
+    --allow-border: #1f5134;
+    --restrict: #f6bd5c;
+    --restrict-bg: #2b2010;
+    --restrict-border: #5a4214;
+    --approval: #c3b4fc;
+    --approval-bg: #221a3a;
+    --approval-border: #43357a;
+    --deny: #f9a19a;
+    --deny-bg: #331616;
+    --deny-border: #6b2525;
+    --info: #93c0f5;
+    --info-bg: #13243a;
+    --info-border: #284a73;
+    --neutral: #b4bec9;
+    --neutral-bg: #1e2730;
+    --neutral-border: #36424f;
+
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --grid: #26313d;
+
+    --node-user: #3987e5;
+    --node-agent: #2fb3a3;
+    --node-delegation: #9085e9;
+    --node-grant: #e0a226;
+    --node-resource: #e66767;
+    --node-capability: #8b95a1;
+
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+    --shadow-lg: 0 12px 32px rgb(0 0 0 / 0.55);
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #0d1217;
+  --surface: #141b22;
+  --surface-2: #1a222b;
+  --surface-3: #232d38;
+  --border: #26313d;
+  --border-strong: #364352;
+  --fg: #e7ecf1;
+  --fg-2: #c3ccd6;
+  --muted: #93a0ae;
+  --accent: #2fb3a3;
+  --accent-hover: #4cc6b7;
+  --accent-fg: #06201d;
+  --accent-soft: #10302c;
+  --focus: #5ea1f0;
+  --allow: #6fdb9a;
+  --allow-bg: #0f2a1b;
+  --allow-border: #1f5134;
+  --restrict: #f6bd5c;
+  --restrict-bg: #2b2010;
+  --restrict-border: #5a4214;
+  --approval: #c3b4fc;
+  --approval-bg: #221a3a;
+  --approval-border: #43357a;
+  --deny: #f9a19a;
+  --deny-bg: #331616;
+  --deny-border: #6b2525;
+  --info: #93c0f5;
+  --info-bg: #13243a;
+  --info-border: #284a73;
+  --neutral: #b4bec9;
+  --neutral-bg: #1e2730;
+  --neutral-border: #36424f;
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --grid: #26313d;
+  --node-user: #3987e5;
+  --node-agent: #2fb3a3;
+  --node-delegation: #9085e9;
+  --node-grant: #e0a226;
+  --node-resource: #e66767;
+  --node-capability: #8b95a1;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 12px 32px rgb(0 0 0 / 0.55);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-fg: var(--fg);
+  --color-fg-2: var(--fg-2);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-focus: var(--focus);
+  --color-allow: var(--allow);
+  --color-allow-bg: var(--allow-bg);
+  --color-allow-border: var(--allow-border);
+  --color-restrict: var(--restrict);
+  --color-restrict-bg: var(--restrict-bg);
+  --color-restrict-border: var(--restrict-border);
+  --color-approval: var(--approval);
+  --color-approval-bg: var(--approval-bg);
+  --color-approval-border: var(--approval-border);
+  --color-deny: var(--deny);
+  --color-deny-bg: var(--deny-bg);
+  --color-deny-border: var(--deny-border);
+  --color-info: var(--info);
+  --color-info-bg: var(--info-bg);
+  --color-info-border: var(--info-border);
+  --color-neutral: var(--neutral);
+  --color-neutral-bg: var(--neutral-bg);
+  --color-neutral-border: var(--neutral-border);
+  --color-series-1: var(--series-1);
+  --color-series-2: var(--series-2);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Inter', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--accent-soft);
+}
+
+.tg-input {
+  display: block;
+  width: 100%;
+  min-height: 36px;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: var(--surface);
+  padding: 6px 10px;
+  color: var(--fg);
+  font: inherit;
+  font-size: 13px;
+}
+
+.tg-input:focus {
+  outline: none;
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 22%, transparent);
+}
+
+.tg-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.tg-input[aria-invalid='true'] {
+  border-color: var(--deny);
+}
+
+textarea.tg-input {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.tg-mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+@keyframes tg-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.tg-skeleton {
+  background: var(--surface-3);
+  border-radius: 6px;
+  animation: tg-pulse 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tg-skeleton {
+    animation: none;
+  }
+}

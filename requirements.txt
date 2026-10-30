@@ -1,0 +1,9 @@
+openai
+fastapi>=0.115.0
+google-genai
+python-dotenv
+requests
+tavily-python
+simpleeval
+sympy
+uvicorn[standard]>=0.30.0

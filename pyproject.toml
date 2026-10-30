@@ -1,0 +1,29 @@
+[project]
+name = "trustgraph-ai"
+version = "1.0.0"
+description = "TrustGraph AI — risk-adaptive identity, delegation and runtime governance for autonomous AI agents"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.0",
+    "google-genai>=2.22.0",
+    "neo4j>=6.3.1",
+    "openai>=3.8.0",
+    "psycopg[binary]>=3.2",
+    "pydantic-settings>=2.4",
+    "python-dotenv>=1.2.3",
+    "simpleeval>=1.0.7",
+    "sqlalchemy>=2.0",
+    "uvicorn[standard]>=0.30.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.1.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+norecursedirs = ["tests/tests", "legacy", "node_modules", ".venv"]
+pythonpath = ["."]
