@@ -42,7 +42,7 @@ services:
   trustgraph-api:
     build:
       context: .
-      dockerfile: Dockerfile.trustgraph
+      dockerfile: Dockerfile
     restart: unless-stopped
     depends_on:
       postgres:

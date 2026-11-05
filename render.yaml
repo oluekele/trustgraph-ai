@@ -1,0 +1,72 @@
+# Render Blueprint: governance engine (FastAPI) + gateway (NestJS).
+# Database: Neon PostgreSQL (one database shared by both services).
+# Dashboard: Vercel (frontend/), which proxies /api/* to the gateway.
+#
+# Values marked `sync: false` are prompted for when the Blueprint is first applied.
+services:
+  - type: web
+    name: trustgraph-engine
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    buildFilter:
+      paths:
+        - trustgraph/**
+        - graph/**
+        - ai_agent/**
+        - evaluation/**
+        - pyproject.toml
+        - uv.lock
+        - Dockerfile
+    envVars:
+      - key: TRUSTGRAPH_DATABASE_URL # Neon direct connection string, ending in ?sslmode=require
+        sync: false
+      - key: TRUSTGRAPH_SERVICE_TOKEN
+        generateValue: true
+      - key: TRUSTGRAPH_TICKET_SECRET
+        generateValue: true
+      - key: TRUSTGRAPH_NEO4J_ENABLED # set to true and add NEO4J_* to use Neo4j AuraDB
+        value: "false"
+      - key: GEMINI_API_KEY # optional: live LLM planner
+        sync: false
+
+  - type: web
+    name: trustgraph-gateway
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    # No healthCheckPath: /api/health reports 503 while the free-tier engine is asleep.
+    buildFilter:
+      paths:
+        - backend/**
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL # same Neon connection string as the engine
+        sync: false
+      - key: TRUSTGRAPH_API_URL # the engine's public URL, e.g. https://trustgraph-engine.onrender.com
+        sync: false
+      - key: TRUSTGRAPH_SERVICE_TOKEN
+        fromService:
+          type: web
+          name: trustgraph-engine
+          envVarKey: TRUSTGRAPH_SERVICE_TOKEN
+      - key: TRUSTGRAPH_TIMEOUT_MS # allow for free-tier cold starts
+        value: "60000"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_ORIGIN # the Vercel URL, e.g. https://trustgraph-ai.vercel.app
+        sync: false
+      - key: TRUST_PROXY
+        value: "true"
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: SEED_DEMO_USERS
+        value: "false"

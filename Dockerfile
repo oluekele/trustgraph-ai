@@ -28,6 +28,7 @@ ENV PATH="/app/.venv/bin:$PATH"
 EXPOSE 8000
 
 HEALTHCHECK --interval=15s --timeout=5s --start-period=20s --retries=5 \
-    CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health').status == 200 else 1)"
+    CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen(f\"http://localhost:{__import__('os').environ.get('PORT','8000')}/health\").status == 200 else 1)"
 
-CMD ["uvicorn", "trustgraph.api:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
+# Hosts such as Render inject PORT; default to 8000 locally.
+CMD ["sh", "-c", "exec uvicorn trustgraph.api:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1"]
